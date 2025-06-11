@@ -27,7 +27,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 class Task(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -40,7 +40,7 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.title}"
 
 class SubTask(models.Model):
     title = models.CharField(max_length=100)
@@ -51,7 +51,7 @@ class SubTask(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.title}"
 
 
 
