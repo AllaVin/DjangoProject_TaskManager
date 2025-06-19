@@ -15,9 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.urls import path, include
 from django.contrib import admin
 from django.urls import path
 
+from TaskManager_app.views import test
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # path("task_manager/", view=test),
+    path('TaskManager_app/', include('TaskManager_app.urls')), # http://127.0.0.1:8000/TaskManager_app/task_manager_path
 ]

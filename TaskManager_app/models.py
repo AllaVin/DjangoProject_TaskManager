@@ -18,6 +18,13 @@ PRIORITY_CHOICES = [
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
+    class Meta:
+        db_table = 'TaskManager_app_category'
+        verbose_name_plural = 'Category'
+        constraints = [
+            models.UniqueConstraint(fields=['name'], name='unique_category_name'),
+        ]
+
     def __str__(self):
         return self.name
 
@@ -39,8 +46,28 @@ class Task(models.Model):
     deadline = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        db_table = 'TaskManager_app_task'  # Задаем имя таблицы в базе данных
+        ordering = ['-created_at']  # Сортировка по убыванию даты публикации
+        verbose_name = 'Task'  # Человекочитаемое имя модели
+        # verbose_name_plural = 'fiction books'  # Человекочитаемое множественное число имени модели
+        # unique_together = ('title', 'category')  # Уникальность по комбинации полей title и category
+        # get_latest_by = 'created_at' # Поле для определения последней записи в таблице
+        # indexes = [
+        #     models.Index(fields=['title', 'status']),
+        #     models.Index(fields=['created_at'], name='created_at_idx'),
+        # ] # Создание различных индексов
+        constraints = [
+            models.UniqueConstraint(fields=['title'], name='unique_project_title'),
+        ]
+
     def __str__(self):
-        return f"{self.title}"
+        return f'{self.title}'
+
+    def get_categories(self):
+        return ", ".join([c.name for c in self.categories.all()])
+
+    get_categories.short_description = "Categories"  # для красивой подписи в админке
 
 class SubTask(models.Model):
     title = models.CharField(max_length=100)
@@ -49,6 +76,14 @@ class SubTask(models.Model):
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, null=True)
     deadline = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'TaskManager_app_subtask'
+        ordering = ['-created_at']
+        verbose_name = 'SubTask'
+        constraints = [
+            models.UniqueConstraint(fields=['title'], name='unique_subtask_title')
+        ]
 
     def __str__(self):
         return f"{self.title}"
